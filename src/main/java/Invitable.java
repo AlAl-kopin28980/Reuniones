@@ -1,4 +1,3 @@
-package src.main.java;
-
 public interface Invitable {
+    public void Invitar(Reunion reunion);
 }
