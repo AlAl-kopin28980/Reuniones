@@ -3,6 +3,7 @@ public class Empleado implements Invitable {
     private String apellidos;
     private String nombre;
     private String correo;
+
     private Reunion reunion;
 
     public Empleado(String id, String apellidos, String nombre, String correo){

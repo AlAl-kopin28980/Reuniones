@@ -1,4 +1,3 @@
-package src.main.java;
-
 public class Nota {
+    private String contenido;
 }
