@@ -13,6 +13,22 @@ public class Empleado implements Invitable {
         this.correo=correo;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
     public void Invitar(Reunion reunion){
         this.reunion=reunion;
     }

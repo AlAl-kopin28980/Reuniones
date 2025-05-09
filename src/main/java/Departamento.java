@@ -6,13 +6,18 @@ public class Departamento implements Invitable {
 
     public Departamento(String nombre){
         this.nombre=nombre;
+        ListaEmpleados = new ArrayList<>();
     }
 
     public void añadirEmpleado(String apellidos, String nombre, String correo){
-        ListaEmpleados.add(new Empleado(Integer.toString(ListaEmpleados.size()),apellidos,nombre,correo));
+        ListaEmpleados.add(new Empleado(nombre + Integer.toString(ListaEmpleados.size()),apellidos,nombre,correo));
     }
     public int obtenerCantidadEmpleados(){
         return ListaEmpleados.size();
+    }
+
+    public String getNombre() {
+        return nombre;
     }
 
     public void Invitar(Reunion reunion){
