@@ -27,9 +27,9 @@ public abstract class Reunion {
     }
     public void Unirse(Instant hora, Empleado yo){
         Asistencias.add(new Asistencia(yo));
-        /*if (hora>horaInicio){
+        if (hora.compareTo(horaInicio)>0){
             Retrasos.add(new Retraso(hora,yo));
-        }*/
+        }
     }
     public void Rechazar(Empleado yo){
         Ausencias.add(new Ausencia(yo));
