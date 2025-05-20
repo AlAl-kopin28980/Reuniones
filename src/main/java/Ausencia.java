@@ -1,7 +1,7 @@
-public class Asistencia {
+public class Ausencia {
     private Empleado persona;
 
-    public Asistencia(Empleado e){
+    public Ausencia(Empleado e){
         persona=e;
     }
 

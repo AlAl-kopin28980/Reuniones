@@ -1,9 +1,10 @@
 import java.time.Instant;
 
-public class Retraso {
+public class Retraso extends Asistencia {
     private Instant hora;
 
-    public Retraso(Instant hora){
+    public Retraso(Instant hora, Empleado e){
+        super(e);
         this.hora = hora;
     }
 
