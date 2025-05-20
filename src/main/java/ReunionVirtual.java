@@ -1,6 +1,6 @@
 import java.time.Duration;
 
-public abstract class ReunionVirtual extends Reunion {
+public class ReunionVirtual extends Reunion {
     private String enlace;
     public ReunionVirtual(Duration duracionPrevista, int dia, int mes, int año, String enlace) {
         super(duracionPrevista,dia, mes, año);

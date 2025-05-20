@@ -1,3 +1,6 @@
+import java.time.Duration;
+import java.time.Instant;
+
 public class Empleado implements Invitable {
     private String id;
     private String apellidos;
@@ -11,6 +14,13 @@ public class Empleado implements Invitable {
         this.apellidos=apellidos;
         this.nombre=nombre;
         this.correo=correo;
+    }
+
+    public Reunion organizarReunionPresencial(Duration duracionPrevista, int dia, int mes, int año, String sala){
+        return new ReunionPresencial(duracionPrevista, dia, mes, año, sala);
+    }
+    public Reunion organizarReunionVirtual(Duration duracionPrevista, int dia, int mes, int año, String enlace){
+        return new ReunionVirtual(duracionPrevista, dia, mes, año, enlace);
     }
 
     public String getId() {
@@ -31,5 +41,15 @@ public class Empleado implements Invitable {
 
     public void Invitar(Reunion reunion){
         this.reunion=reunion;
+    }
+    public void UnirseAReunion(Instant hora){
+        reunion.Unirse(hora, this);
+    }
+    public void RechazarReunion(Instant hora){
+        reunion.Rechazar(this);
+    }
+
+    public String toString(){
+        return nombre + " " + apellidos;
     }
 }

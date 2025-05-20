@@ -20,28 +20,37 @@ public abstract class Reunion {
     Reunion(Duration duracionPrevista, int dia, int mes, int año) {
         this.duracionPrevista=duracionPrevista;
         fecha= LocalDate.of(año,mes,dia);
+
+        Invitaciones = new ArrayList<Invitacion>();
+        Asistencias = new ArrayList<Asistencia>();
+        Ausencias = new ArrayList<Ausencia>();
+        Retrasos = new ArrayList<Retraso>();
     }
 
     public void Invitar(Instant hora, Invitable invitado){
         Invitaciones.add(new Invitacion(hora,invitado,this));
     }
     public void Unirse(Instant hora, Empleado yo){
-        Asistencias.add(new Asistencia(yo));
-        if (hora.compareTo(horaInicio)>0){
-            Retrasos.add(new Retraso(hora,yo));
+        if (horaFin==null) {
+            Asistencias.add(new Asistencia(yo));
+                if (horaInicio != null)
+                    if (hora.compareTo(horaInicio) > 0)
+                        Retrasos.add(new Retraso(hora, yo));
+        }else {
+            Ausencias.add(new Ausencia(yo));
         }
     }
     public void Rechazar(Empleado yo){
         Ausencias.add(new Ausencia(yo));
     }
 
-    public ArrayList obtenerAsistencias(){
+    public ArrayList<Asistencia> obtenerAsistencias(){
         return Asistencias;
     }
-    public ArrayList obtenerRetrasos(){
+    public ArrayList<Retraso> obtenerRetrasos(){
         return Retrasos;
     }
-    public ArrayList obtenerAunsencias(){
+    public ArrayList<Ausencia> obtenerAunsencias(){
         return Ausencias;
     }
     public int obtenerTotalAsistencia(){
