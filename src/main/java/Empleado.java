@@ -16,11 +16,11 @@ public class Empleado implements Invitable {
         this.correo=correo;
     }
 
-    public Reunion organizarReunionPresencial(Duration duracionPrevista, int dia, int mes, int año, String sala){
-        return new ReunionPresencial(duracionPrevista, dia, mes, año, sala);
+    public Reunion organizarReunionPresencial(Duration duracionPrevista, int dia, int mes, int año, String sala,tipoReunion tipo){
+        return new ReunionPresencial(duracionPrevista, dia, mes, año, sala,tipo);
     }
-    public Reunion organizarReunionVirtual(Duration duracionPrevista, int dia, int mes, int año, String enlace){
-        return new ReunionVirtual(duracionPrevista, dia, mes, año, enlace);
+    public Reunion organizarReunionVirtual(Duration duracionPrevista, int dia, int mes, int año, String enlace,tipoReunion tipo){
+        return new ReunionVirtual(duracionPrevista, dia, mes, año, enlace,tipo);
     }
 
     public String getId() {

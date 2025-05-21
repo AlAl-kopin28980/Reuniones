@@ -1,7 +1,7 @@
-package src.main.java;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 
 public class ReunionPresencial extends Reunion {
     private String sala;
@@ -12,17 +12,17 @@ public class ReunionPresencial extends Reunion {
     public void emitirInforme() {
         try {
             FileWriter informe = new FileWriter("InformeReunion.txt");
-            informe.write("Fecha de la reunión:"+this.obtenerFecha()+"\nHora de inicio prevista:"+this.obtenerHoraInicioPrevista()+"Hora de inicio real:"+this.obtenerHoraInicio());
-            informe.write("Hora de fin:"+this.obtenerHoraFin()+"\nDuración de la reunión:"+this.calcularTiempoReal()+"\nSala de la reunión:"+sala+"\nTipo de reunión:"+this.obtenerTipoReunion());
-            informe.write("Lista de participantes:");
+            informe.write("Fecha de la reunión:"+this.obtenerFecha()+"\nHora de inicio prevista:"+this.obtenerHoraInicioPrevista()+"\nHora de inicio real:"+this.obtenerHoraInicio());
+            informe.write("\nHora de fin:"+this.obtenerHoraFin()+"\nDuración de la reunión:"+this.calcularTiempoReal()+"\nSala de la reunión:"+sala+"\nTipo de reunión:"+this.obtenerTipoReunion());
+            informe.write("\nLista de participantes:");
             ArrayList<Asistencia> asistencias =this.obtenerAsistencias();
-            ArrayList<Ausencia> retrasos=this.obtenerRetrasos();
+            ArrayList<Retraso> retrasos=this.obtenerRetrasos();
             for (Asistencia persona: asistencias){
                 Empleado empleado=persona.getPersona();
                 informe.write("\n"+empleado.getNombre()+" "+empleado.getApellidos());
             }
-            informe.write("Lista de retrasos:");
-            for (Ausencia persona: retrasos){
+            informe.write("\nLista de retrasos:");
+            for (Retraso persona: retrasos){
                 Empleado empleado=persona.getPersona();
                 informe.write("\n"+empleado.getNombre()+" "+empleado.getApellidos());
             }
