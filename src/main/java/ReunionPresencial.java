@@ -2,9 +2,6 @@ package src.main.java;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class ReunionPresencial extends Reunion {
     private String sala;

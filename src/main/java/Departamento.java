@@ -10,7 +10,7 @@ public class Departamento implements Invitable {
     }
 
     public void añadirEmpleado(String apellidos, String nombre, String correo){
-        ListaEmpleados.add(new Empleado(nombre + Integer.toString(ListaEmpleados.size()),apellidos,nombre,correo));
+        ListaEmpleados.add(new Empleado(this.nombre + Integer.toString(ListaEmpleados.size()),apellidos,nombre,correo));
     }
     public int obtenerCantidadEmpleados(){
         return ListaEmpleados.size();
@@ -18,6 +18,9 @@ public class Departamento implements Invitable {
 
     public String getNombre() {
         return nombre;
+    }
+    public Empleado getEmpleado(int index){
+        return ListaEmpleados.get(index);
     }
 
     public void Invitar(Reunion reunion){
