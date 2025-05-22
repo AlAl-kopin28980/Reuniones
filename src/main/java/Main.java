@@ -25,6 +25,13 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        r.crearNota("Está reunión es muy informativa");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        r.crearNota("Está reunión está finalizando");
         r.finalizar();
         System.out.println(r.obtenerAsistencias());
         System.out.println(r.obtenerAunsencias());

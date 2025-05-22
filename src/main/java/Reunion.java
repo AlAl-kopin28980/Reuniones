@@ -21,6 +21,7 @@ public abstract class Reunion {
     private ArrayList<Asistencia> Asistencias;
     private ArrayList<Ausencia> Ausencias;
     private ArrayList<Retraso> Retrasos;
+    private ArrayList<Nota> Notas;
 
     public Reunion(Duration duracionPrevista, int dia, int mes, int año, tipoReunion tipo) {
         this.duracionPrevista=duracionPrevista;
@@ -30,6 +31,7 @@ public abstract class Reunion {
         Asistencias = new ArrayList<Asistencia>();
         Ausencias = new ArrayList<Ausencia>();
         Retrasos = new ArrayList<Retraso>();
+        Notas = new ArrayList<Nota>();
     }
 
     public void Invitar(Instant hora, Invitable invitado){
@@ -54,6 +56,13 @@ public abstract class Reunion {
         Ausencias.add(new Ausencia(yo));
     }
 
+    public void crearNota(String contenido){
+        Notas.add(new Nota(contenido));
+    }
+
+    public ArrayList<Nota> obtenerNotas(){
+        return Notas;
+    }
     public ArrayList<Asistencia> obtenerAsistencias(){
         return Asistencias;
     }
