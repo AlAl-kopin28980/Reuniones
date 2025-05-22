@@ -3,7 +3,7 @@ import java.time.Instant;
 public class Retraso extends Asistencia {
     private Instant hora;
 
-    public Retraso(Instant hora, Empleado e){
+    public Retraso(Instant hora, Persona e){
         super(e);
         this.hora = hora;
     }

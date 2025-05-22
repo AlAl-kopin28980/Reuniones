@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.time.temporal.ChronoUnit;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
 public abstract class Reunion {
     private LocalDate fecha;
@@ -34,17 +35,22 @@ public abstract class Reunion {
     public void Invitar(Instant hora, Invitable invitado){
         Invitaciones.add(new Invitacion(hora,invitado,this));
     }
-    public void Unirse(Instant hora, Empleado yo){
-        if (horaFin==null) {
+    public void Unirse(Instant hora, Persona yo) {
+        if (horaFin == null) {
             Asistencias.add(new Asistencia(yo));
-                if (horaInicio != null)
-                    if (hora.compareTo(horaInicio) > 0)
-                        Retrasos.add(new Retraso(hora, yo));
-        }else {
-            Ausencias.add(new Ausencia(yo));
+            Iterator<Ausencia> itr =Ausencias.iterator();
+            while (itr.hasNext()){
+                Ausencia ci_itr=itr.next();
+                if (ci_itr.getPersona() == yo){
+                    itr.remove();
+                }
+            }
+            if (horaInicio != null)
+                if (hora.compareTo(horaInicio) > 0)
+                    Retrasos.add(new Retraso(hora, yo));
         }
     }
-    public void Rechazar(Empleado yo){
+    public void Rechazar(Persona yo){
         Ausencias.add(new Ausencia(yo));
     }
 

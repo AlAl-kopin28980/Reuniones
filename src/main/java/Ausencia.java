@@ -1,11 +1,11 @@
 public class Ausencia {
-    private Empleado persona;
+    private Persona persona;
 
-    public Ausencia(Empleado e){
+    public Ausencia(Persona e){
         persona=e;
     }
 
-    public Empleado getPersona() {
+    public Persona getPersona() {
         return persona;
     }
 }
