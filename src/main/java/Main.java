@@ -26,9 +26,6 @@ public class Main {
             e.printStackTrace();
         }
         r.finalizar();
-        /*for (int i=1; i< ventas.obtenerCantidadEmpleados(); i++){
-            ventas.getEmpleado(i).UnirseAReunion(Instant.now());
-        }*/
         System.out.println(r.obtenerAsistencias());
         System.out.println(r.obtenerAunsencias());
         r.emitirInforme();

@@ -8,4 +8,8 @@ public class Ausencia {
     public Persona getPersona() {
         return persona;
     }
+
+    public String toString() {
+        return persona.toString();
+    }
 }

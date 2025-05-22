@@ -2,13 +2,6 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class Empleado extends Persona implements Invitable {
-    private String id;
-    private String apellidos;
-    private String nombre;
-    private String correo;
-
-    private Reunion reunion;
-
     public Empleado(String id, String apellidos, String nombre, String correo){
         super(id,apellidos,nombre,correo);
     }

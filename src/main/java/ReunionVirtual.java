@@ -21,18 +21,15 @@ public class ReunionVirtual extends Reunion {
             informe.write("\nHora de fin:"+this.obtenerHoraFin()+"\nDuración de la reunión:"+this.calcularTiempoReal()+"\nEnlace de la reunión:"+enlace+"\nTipo de reunión:"+this.obtenerTipoReunion());
             informe.write("\nLista de participantes:");
             for (Asistencia persona: asistencias){
-                Persona empleado=persona.getPersona();
-                informe.write("\n"+empleado.toString());
+                informe.write("\n"+persona.toString());
             }
             informe.write("\nLista de retrasos:");
             for (Retraso persona: retrasos){
-                Persona empleado=persona.getPersona();
-                informe.write("\n"+empleado.toString()+". Tiempo de llegada: "+persona.getHora());
+                informe.write("\n"+persona.toString()+". Tiempo de llegada: "+persona.getHora());
             }
             informe.write("\nLista de ausencias:");
             for (Ausencia persona: ausencias){
-                Persona empleado=persona.getPersona();
-                informe.write("\n"+empleado.toString());
+                informe.write("\n"+persona.toString());
             }
             informe.close();
             System.out.println("Se emitió informe correctamente.");

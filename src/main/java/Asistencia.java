@@ -8,4 +8,8 @@ public class Asistencia {
     public Persona getPersona() {
         return persona;
     }
+
+    public String toString() {
+        return persona.toString();
+    }
 }
