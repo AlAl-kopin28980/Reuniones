@@ -16,4 +16,5 @@ public class Invitacion {
     public Invitable getInvitado() {
         return invitado;
     }
+    public String toString(){return invitado.toString();}
 }

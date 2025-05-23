@@ -34,7 +34,13 @@ public abstract class Reunion {
     }
 
     public void Invitar(Instant hora, Invitable invitado){
-        Invitaciones.add(new Invitacion(hora,invitado,this));
+        if (invitado.getClass()==Departamento.class){
+            for(int i=0;i<((Departamento) invitado).obtenerCantidadEmpleados();i++){
+                Invitaciones.add(new Invitacion(hora,((Departamento) invitado).getEmpleado(i),this));
+            }
+        }
+        else{
+        Invitaciones.add(new Invitacion(hora,invitado,this));}
     }
     public void Unirse(Instant hora, Persona yo) {
         if (horaFin == null) {
@@ -71,6 +77,11 @@ public abstract class Reunion {
     public ArrayList<Ausencia> obtenerAunsencias(){
         return Ausencias;
     }
+
+    public ArrayList<Invitacion> obtenerInvitaciones(){
+        return Invitaciones;
+    }
+
     public int obtenerTotalAsistencia(){
         return Asistencias.size();
     }
@@ -115,22 +126,30 @@ public abstract class Reunion {
             FileWriter informe = new FileWriter("InformeReunion.txt");
             informe.write("Fecha de la reunión:"+fecha+"\nHora de inicio prevista:"+this.InstantToString(horaPrevista)+"\nHora de inicio real:"+this.InstantToString(horaInicio));
             informe.write("\nHora de fin:"+this.InstantToString(horaFin)+"\nDuración de la reunión:"+this.calcularTiempoReal()+"\n"+EspacioDeReunion+" de la reunión:"+EspacioEspecifico+"\nTipo de reunión:"+tipo);
-            informe.write("\nLista de participantes:");
-            for (Asistencia persona: Asistencias){
-                informe.write("\n"+persona.toString());
+            if (Asistencias.size()!=0){
+                informe.write("\nLista de participantes:");
+                for (Asistencia persona: Asistencias){
+                    informe.write("\n"+persona.toString());
+                }
             }
-            informe.write("\nLista de retrasos:");
-            for (Retraso persona: Retrasos){
-                informe.write("\n"+persona.toString()+". Tiempo de llegada: "+this.InstantToString(persona.getHora()));
+            if (Retrasos.size()!=0) {
+                informe.write("\nLista de retrasos:");
+                for (Retraso persona : Retrasos) {
+                    informe.write("\n" + persona.toString() + ". Tiempo de llegada: " + this.InstantToString(persona.getHora()));
+                }
             }
-            informe.write("\nLista de ausencias:");
-            for (Ausencia persona: Ausencias){
-                informe.write("\n"+persona.toString());
+            if (Ausencias.size()!=0) {
+                informe.write("\nLista de ausencias:");
+                for (Ausencia persona : Ausencias) {
+                    informe.write("\n" + persona.toString());
+                }
             }
             informe.write("\nTotal de asistentes: "+this.obtenerTotalAsistencia()+"\nPorcentaje de asistencia: "+this.obtenerProcentajeAsistencia());
-            informe.write("\nNotas:");
-            for (Nota nota: Notas){
-                informe.write("\n"+nota.getContenido());
+            if (Notas.size()!=0) {
+                informe.write("\nNotas:");
+                for (Nota nota : Notas) {
+                    informe.write("\n" + nota.getContenido());
+                }
             }
             informe.close();
             System.out.println("Se emitió informe correctamente.");
