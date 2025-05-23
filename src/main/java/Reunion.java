@@ -21,6 +21,15 @@ public abstract class Reunion {
     private ArrayList<Retraso> Retrasos;
     private ArrayList<Nota> Notas;
 
+    /**
+     *
+     * @param horaPrevista
+     * @param duracionPrevista
+     * @param dia
+     * @param mes
+     * @param año
+     * @param tipo Motivo de la Reunion
+     */
     public Reunion(Instant horaPrevista, Duration duracionPrevista, int dia, int mes, int año, tipoReunion tipo) {
         this.horaPrevista=horaPrevista;
         this.duracionPrevista=duracionPrevista;
@@ -33,15 +42,21 @@ public abstract class Reunion {
         Notas = new ArrayList<Nota>();
     }
 
+    /** Invita un Invitable
+     *
+     * @param hora Hora en que se envia la invitacion
+     * @param invitado Invitable que se le envia la invitacion
+     */
     public void Invitar(Instant hora, Invitable invitado){
-        if (invitado.getClass()==Departamento.class){
-            for(int i=0;i<((Departamento) invitado).obtenerCantidadEmpleados();i++){
-                Invitaciones.add(new Invitacion(hora,((Departamento) invitado).getEmpleado(i),this));
-            }
-        }
-        else{
-        Invitaciones.add(new Invitacion(hora,invitado,this));}
+        Invitaciones.add(new Invitacion(hora,invitado,this));
     }
+
+    /** Une a persona a la reunion y marca su Asistencia
+     * si llega luego de la hora de inicio se registra Retraso
+     *
+     * @param hora Instant en el que se une a la reunion
+     * @param yo Persona que se une
+     */
     public void Unirse(Instant hora, Persona yo) {
         if (horaFin == null) {
             Asistencias.add(new Asistencia(yo));
@@ -57,6 +72,11 @@ public abstract class Reunion {
                     Retrasos.add(new Retraso(hora, yo));
         }
     }
+
+    /**
+     *
+     * @param yo Persona que rechaza unirse a la reunion
+     */
     public void Rechazar(Persona yo){
         Ausencias.add(new Ausencia(yo));
     }
@@ -85,9 +105,19 @@ public abstract class Reunion {
     public int obtenerTotalAsistencia(){
         return Asistencias.size();
     }
+
+    /**
+     *
+     * @return Porcentaje de Asistencia sobre Personas invitadas
+     */
     public float obtenerProcentajeAsistencia(){
         return (float) Asistencias.size()/(Asistencias.size()+Ausencias.size())*100f;
     }
+
+    /** Calcula la duracion real de la Reunion
+     *
+     * @return duracion de la Reunion en segundos
+     */
     public float calcularTiempoReal(){
         duracion = horaInicio.until(horaFin, ChronoUnit.SECONDS);
         return duracion;
@@ -116,13 +146,23 @@ public abstract class Reunion {
             return "Reunion terminada a la hora: "+ horaFin.toString();
     }
 
+
     public String InstantToString(Instant hora) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneOffset.UTC);
             String formattedInstant = formatter.format(hora);
             return formattedInstant;
     }
+    /**
+     *
+     * @param EspacioDeReunion Nombre generico de donde se realiza la reunion ej: "Sala"
+     * @param EspacioEspecifico Nombre de donde se realiza la reunion ej: "1-3"
+     */
     protected void emitirInforme(String EspacioDeReunion, String EspacioEspecifico) {
         try {
+            ArrayList<Asistencia> asistencias =this.obtenerAsistencias();
+            ArrayList<Retraso> retrasos=this.obtenerRetrasos();
+            ArrayList<Ausencia> ausencias =this.obtenerAunsencias();
+            ArrayList<Nota> notas =this.obtenerNotas();
             FileWriter informe = new FileWriter("InformeReunion.txt");
             informe.write("Fecha de la reunión:"+fecha+"\nHora de inicio prevista:"+this.InstantToString(horaPrevista)+"\nHora de inicio real:"+this.InstantToString(horaInicio));
             informe.write("\nHora de fin:"+this.InstantToString(horaFin)+"\nDuración de la reunión:"+this.calcularTiempoReal()+"\n"+EspacioDeReunion+" de la reunión:"+EspacioEspecifico+"\nTipo de reunión:"+tipo);
@@ -158,6 +198,4 @@ public abstract class Reunion {
             e.printStackTrace();
         }
     }
-
-
 }
