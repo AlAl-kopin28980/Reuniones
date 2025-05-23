@@ -13,13 +13,21 @@ public class Main {
         r.Invitar(Instant.now(),ventas);
         r.Invitar(Instant.now(),maria);
         r.iniciar();
-        juarez.UnirseAReunion(Instant.now());
+        try{
+        juarez.UnirseAReunion(Instant.now());}
+        catch(NoTieneInvitacionException w){
+            System.out.println(w.getMessage());
+        }
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        maria.UnirseAReunion(Instant.now());
+        try{
+        maria.UnirseAReunion(Instant.now());}
+        catch(NoTieneInvitacionException w){
+            System.out.println(w.getMessage());
+        }
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -32,9 +40,18 @@ public class Main {
             e.printStackTrace();
         }
         r.crearNota("Está reunión está finalizando");
-        r.finalizar();
+        try {
+            r.finalizar();
+        } catch (ReunionSinIniciarException e) {
+            System.out.println(e.getMessage());;
+        }
         System.out.println(r.obtenerAsistencias());
         System.out.println(r.obtenerAunsencias());
-        r.emitirInforme();
+        try {
+            r.emitirInforme();
+        }
+        catch(ReunionEnCursoException|ReunionSinIniciarException w){
+            System.out.println(w.getMessage());
+        }
     }
 }

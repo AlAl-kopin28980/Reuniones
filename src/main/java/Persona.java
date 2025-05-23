@@ -40,15 +40,20 @@ public class Persona implements Invitable {
      */
     public void Invitar(Reunion reunion){
         this.reunion=reunion;
-        reunion.Rechazar(this);
+        this.RechazarReunion();
     }
 
     /** Se une a la reunion a la que ha sido invitada
      *
      * @param hora Instant en el que se une
      */
-    public void UnirseAReunion(Instant hora){
-        reunion.Unirse(hora, this);
+    public void UnirseAReunion(Instant hora) throws NoTieneInvitacionException{
+        if (reunion!=null) {
+            reunion.Unirse(hora, this);
+        }
+        else{
+            throw new NoTieneInvitacionException(this);
+        }
     }
     /** Rechaza la reunion a la que ha sido invitada
      */

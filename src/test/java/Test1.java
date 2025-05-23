@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Test1 {
     private Departamento ventas;
@@ -53,13 +52,7 @@ public class Test1 {
     @DisplayName("Test: Invitar persona externa")
     public void testInvitarPersona() {
         r.Invitar(Instant.now(), maria);
-        r.obtenerInvitaciones();
-    }
-
-    @Test
-    @DisplayName("Test: Persona se une sin invitacion")
-    public void testSinInvitación() {
-        juarez.UnirseAReunion(Instant.now());
+        assertNotNull(r.obtenerInvitaciones());
     }
 
     @Test
@@ -67,12 +60,12 @@ public class Test1 {
     public void crearNotas() {
         r.iniciar();
         r.crearNota("La reunión empieza");
-        r.obtenerNotas();
+        assertNotNull(r.obtenerNotas());
     }
 
     @Test
     @DisplayName("Test: Asistencias, ausencias y retrasos")
-    public void testLlegada() {
+    public void testLlegada() throws Exception {
         r.Invitar(Instant.now(), ventas);
         r.Invitar(Instant.now(), maria);
         r.iniciar();
@@ -94,14 +87,14 @@ public class Test1 {
             e.printStackTrace();
         }
         r.finalizar();
-        r.obtenerAunsencias();
-        r.obtenerAsistencias();
-        r.obtenerRetrasos();
+        assertNotNull(r.obtenerAunsencias());
+        assertNotNull(r.obtenerAsistencias());
+        assertNotNull(r.obtenerRetrasos());
     }
 
     @Test
     @DisplayName("Test: emitir informe")
-    public void crearInforme() {
+    public void crearInforme()  throws Exception {
         r.Invitar(Instant.now(), ventas);
         r.Invitar(Instant.now(), maria);
         r.iniciar();
@@ -126,5 +119,52 @@ public class Test1 {
         r.crearNota("Está reunión está finalizando");
         r.finalizar();
         r.emitirInforme();
+    }
+
+
+    @Test
+    @DisplayName("Test: NoTieneInvitacionException")
+    public void testSinInvitación() throws Exception{
+        Exception exception = assertThrows(NoTieneInvitacionException.class,
+                ()->{
+                    juarez.UnirseAReunion(Instant.now());
+                });
+    }
+
+    @Test
+    @DisplayName("Test: ReunionSinIniciarException en finalizar")
+    public void seFinzalizaAntes() throws Exception{
+        Exception exception = assertThrows(ReunionSinIniciarException.class,
+                ()->{
+                    r.finalizar();
+                });
+    }
+    @Test
+    @DisplayName("Test: ReunionSinIniciarException en emitirInforme")
+    public void informeAntesInicio() throws Exception{
+        Exception exception = assertThrows(ReunionSinIniciarException.class,
+                ()->{
+                    r.emitirInforme();
+                });
+    }
+
+    @Test
+    @DisplayName("Test: ReunionEnCursoException en emitirInforme")
+    public void InformeAntesDeFin() throws Exception{
+        r.iniciar();
+        Exception exception = assertThrows(ReunionEnCursoException.class,
+                ()->{
+                    r.emitirInforme();
+                });
+    }
+
+    @Test
+    @DisplayName("Test: ReunionEnCursoException1")
+    public void calcularAntesDeFin() throws Exception{
+        r.iniciar();
+        Exception exception = assertThrows(ReunionEnCursoException.class,
+                ()->{
+                    r.calcularTiempoReal();
+                });
     }
 }

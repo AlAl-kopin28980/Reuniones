@@ -118,15 +118,26 @@ public abstract class Reunion {
      *
      * @return duracion de la Reunion en segundos
      */
-    public float calcularTiempoReal(){
-        duracion = horaInicio.until(horaFin, ChronoUnit.SECONDS);
-        return duracion;
+    public float calcularTiempoReal() throws ReunionEnCursoException,ReunionSinIniciarException{
+        if(horaInicio!=null & horaFin!=null) {
+            duracion = horaInicio.until(horaFin, ChronoUnit.SECONDS);
+            return duracion;
+        }
+        else if(horaInicio==null){
+            throw new ReunionSinIniciarException();
+        }
+        else {
+            throw new ReunionEnCursoException();
+        }
     }
     public void iniciar(){
         horaInicio= Instant.now();
     }
-    public void finalizar(){
-        horaFin= Instant.now();
+    public void finalizar() throws ReunionSinIniciarException{
+        if (horaInicio!=null) {
+            horaFin = Instant.now();
+        }
+        else{throw new ReunionSinIniciarException();}
     }
     public Duration obtenerTiempoPrevisto(){
         return duracionPrevista;
@@ -157,45 +168,52 @@ public abstract class Reunion {
      * @param EspacioDeReunion Nombre generico de donde se realiza la reunion ej: "Sala"
      * @param EspacioEspecifico Nombre de donde se realiza la reunion ej: "1-3"
      */
-    protected void emitirInforme(String EspacioDeReunion, String EspacioEspecifico) {
-        try {
-            ArrayList<Asistencia> asistencias =this.obtenerAsistencias();
-            ArrayList<Retraso> retrasos=this.obtenerRetrasos();
-            ArrayList<Ausencia> ausencias =this.obtenerAunsencias();
-            ArrayList<Nota> notas =this.obtenerNotas();
-            FileWriter informe = new FileWriter("InformeReunion.txt");
-            informe.write("Fecha de la reunión:"+fecha+"\nHora de inicio prevista:"+this.InstantToString(horaPrevista)+"\nHora de inicio real:"+this.InstantToString(horaInicio));
-            informe.write("\nHora de fin:"+this.InstantToString(horaFin)+"\nDuración de la reunión:"+this.calcularTiempoReal()+"\n"+EspacioDeReunion+" de la reunión:"+EspacioEspecifico+"\nTipo de reunión:"+tipo);
-            if (Asistencias.size()!=0){
-                informe.write("\nLista de participantes:");
-                for (Asistencia persona: Asistencias){
-                    informe.write("\n"+persona.toString());
+    protected void emitirInforme(String EspacioDeReunion, String EspacioEspecifico) throws ReunionSinIniciarException,ReunionEnCursoException {
+        try{
+            float tiempoReal=this.calcularTiempoReal();
+            try {
+                ArrayList<Asistencia> asistencias =this.obtenerAsistencias();
+                ArrayList<Retraso> retrasos=this.obtenerRetrasos();
+                ArrayList<Ausencia> ausencias =this.obtenerAunsencias();
+                ArrayList<Nota> notas =this.obtenerNotas();
+                FileWriter informe = new FileWriter("InformeReunion.txt");
+                informe.write("Fecha de la reunión:"+fecha+"\nHora de inicio prevista:"+this.InstantToString(horaPrevista)+"\nHora de inicio real:"+this.InstantToString(horaInicio));
+                informe.write("\nHora de fin:"+this.InstantToString(horaFin)+"\nDuración de la reunión:"+tiempoReal+"\n"+EspacioDeReunion+" de la reunión:"+EspacioEspecifico+"\nTipo de reunión:"+tipo);
+                if (Asistencias.size()!=0){
+                    informe.write("\nLista de participantes:");
+                    for (Asistencia persona: Asistencias){
+                        informe.write("\n"+persona.toString());
+                    }
                 }
-            }
-            if (Retrasos.size()!=0) {
-                informe.write("\nLista de retrasos:");
-                for (Retraso persona : Retrasos) {
-                    informe.write("\n" + persona.toString() + ". Tiempo de llegada: " + this.InstantToString(persona.getHora()));
+                if (Retrasos.size()!=0) {
+                    informe.write("\nLista de retrasos:");
+                    for (Retraso persona : Retrasos) {
+                        informe.write("\n" + persona.toString() + ". Tiempo de llegada: " + this.InstantToString(persona.getHora()));
+                    }
                 }
-            }
-            if (Ausencias.size()!=0) {
-                informe.write("\nLista de ausencias:");
-                for (Ausencia persona : Ausencias) {
-                    informe.write("\n" + persona.toString());
+                if (Ausencias.size()!=0) {
+                    informe.write("\nLista de ausencias:");
+                    for (Ausencia persona : Ausencias) {
+                        informe.write("\n" + persona.toString());
+                    }
                 }
-            }
-            informe.write("\nTotal de asistentes: "+this.obtenerTotalAsistencia()+"\nPorcentaje de asistencia: "+this.obtenerProcentajeAsistencia());
-            if (Notas.size()!=0) {
-                informe.write("\nNotas:");
-                for (Nota nota : Notas) {
-                    informe.write("\n" + nota.getContenido());
+                informe.write("\nTotal de asistentes: "+this.obtenerTotalAsistencia()+"\nPorcentaje de asistencia: "+this.obtenerProcentajeAsistencia());
+                if (Notas.size()!=0) {
+                    informe.write("\nNotas:");
+                    for (Nota nota : Notas) {
+                        informe.write("\n" + nota.getContenido());
+                    }
                 }
+                informe.close();
+                System.out.println("Se emitió informe correctamente.");
+            } catch (IOException e) {
+                System.out.println("Ha ocurrido un error.");
+                e.printStackTrace();
             }
-            informe.close();
-            System.out.println("Se emitió informe correctamente.");
-        } catch (IOException e) {
-            System.out.println("Ha ocurrido un error.");
-            e.printStackTrace();
         }
+        catch (ReunionEnCursoException | ReunionSinIniciarException w){
+            throw w;
+        }
+
     }
 }

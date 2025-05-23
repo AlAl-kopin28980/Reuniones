@@ -26,7 +26,7 @@ public class ReunionVirtual extends Reunion {
     /**
      * Emite un informe sobre la Reunion
      */
-    public void emitirInforme() {
+    public void emitirInforme() throws ReunionSinIniciarException,ReunionEnCursoException {
         super.emitirInforme("Enlace",enlace);
     }
 }
