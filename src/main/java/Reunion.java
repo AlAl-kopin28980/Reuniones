@@ -12,8 +12,8 @@ public abstract class Reunion {
     private LocalDate fecha;
     private Instant horaPrevista;
     private Duration duracionPrevista;
-    private Instant horaInicio;
-    private Instant horaFin;
+    private Instant horaInicio = null;
+    private Instant horaFin = null;
     private float duracion;
     private tipoReunion tipo;
 
@@ -23,7 +23,8 @@ public abstract class Reunion {
     private ArrayList<Retraso> Retrasos;
     private ArrayList<Nota> Notas;
 
-    public Reunion(Duration duracionPrevista, int dia, int mes, int año, tipoReunion tipo) {
+    public Reunion(Instant horaPrevista, Duration duracionPrevista, int dia, int mes, int año, tipoReunion tipo) {
+        this.horaPrevista=horaPrevista;
         this.duracionPrevista=duracionPrevista;
         fecha= LocalDate.of(año,mes,dia);
         this.tipo=tipo;
@@ -96,6 +97,15 @@ public abstract class Reunion {
     public Instant obtenerHoraInicio(){return horaInicio;}
     public Instant obtenerHoraFin(){return horaFin;}
     public tipoReunion obtenerTipoReunion(){return tipo;}
+
+    public String toString() {
+        if (horaInicio==null)
+            return "Reunion prevista para la hora: "+ horaPrevista.toString();
+        else if (horaFin==null)
+            return "Reunion en progreso desde la hora: "+ horaInicio.toString();
+        else
+            return "Reunion terminada a la hora: "+ horaFin.toString();
+    }
 
     protected void emitirInforme(String EspacioDeReunion, String EspacioEspecifico) {
         try {

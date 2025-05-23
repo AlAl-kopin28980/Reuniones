@@ -6,11 +6,11 @@ public class Empleado extends Persona implements Invitable {
         super(id,apellidos,nombre,correo);
     }
 
-    public ReunionPresencial organizarReunionPresencial(Duration duracionPrevista, int dia, int mes, int año, String sala,tipoReunion tipo){
-        return new ReunionPresencial(duracionPrevista, dia, mes, año, sala,tipo);
+    public ReunionPresencial organizarReunionPresencial(Instant horaPrevista, Duration duracionPrevista, int dia, int mes, int año, String sala,tipoReunion tipo){
+        return new ReunionPresencial(horaPrevista, duracionPrevista, dia, mes, año, sala,tipo);
     }
-    public ReunionVirtual organizarReunionVirtual(Duration duracionPrevista, int dia, int mes, int año, String enlace,tipoReunion tipo){
-        return new ReunionVirtual(duracionPrevista, dia, mes, año, enlace,tipo);
+    public ReunionVirtual organizarReunionVirtual(Instant horaPrevista, Duration duracionPrevista, int dia, int mes, int año, String enlace,tipoReunion tipo){
+        return new ReunionVirtual(horaPrevista, duracionPrevista, dia, mes, año, enlace,tipo);
     }
 
 }

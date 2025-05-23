@@ -9,7 +9,7 @@ public class Main {
         ventas.añadirEmpleado("Mario","Luigi","pepoterapato@hola.com");
         Persona maria= new Persona("1","Magdalena","Maria","marialaquellora@hola.com");
         Empleado juarez = ventas.getEmpleado(0);
-        ReunionPresencial r = juarez.organizarReunionPresencial(Duration.ofHours(2),20,05,2025,"Salon7",tipoReunion.MARKETING);
+        ReunionPresencial r = juarez.organizarReunionPresencial(Instant.now(), Duration.ofHours(2),20,05,2025,"Salon7",tipoReunion.MARKETING);
         r.Invitar(Instant.now(),ventas);
         r.Invitar(Instant.now(),maria);
         r.iniciar();

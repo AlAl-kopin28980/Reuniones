@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class ReunionVirtual extends Reunion {
     private String enlace;
-    public ReunionVirtual(Duration duracionPrevista, int dia, int mes, int año, String enlace, tipoReunion tipo) {
-        super(duracionPrevista,dia, mes, año,tipo);
+    public ReunionVirtual(Instant horaPrevista, Duration duracionPrevista, int dia, int mes, int año, String enlace, tipoReunion tipo) {
+        super(horaPrevista,duracionPrevista,dia, mes, año,tipo);
         this.enlace=enlace;
     }
     public void emitirInforme() {

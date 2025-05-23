@@ -28,4 +28,8 @@ public class Departamento implements Invitable {
             listaEmpleado.Invitar(reunion);
         }
     }
+
+    public String toString() {
+        return nombre;
+    }
 }
