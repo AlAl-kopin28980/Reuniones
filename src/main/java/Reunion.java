@@ -127,6 +127,7 @@ public abstract class Reunion {
             for (Ausencia persona: Ausencias){
                 informe.write("\n"+persona.toString());
             }
+            informe.write("\nTotal de asistentes: "+this.obtenerTotalAsistencia()+"\nPorcentaje de asistencia: "+this.obtenerProcentajeAsistencia());
             informe.write("\nNotas:");
             for (Nota nota: Notas){
                 informe.write("\n"+nota.getContenido());
