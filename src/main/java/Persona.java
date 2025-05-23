@@ -33,14 +33,26 @@ public class Persona implements Invitable {
         return correo;
     }
 
+    /** Recive una invitacion
+     * la invitacion es guardada para luego Unirse o Rechazar
+     *
+     * @param reunion Reunion a la que se es invitado
+     */
     public void Invitar(Reunion reunion){
         this.reunion=reunion;
         reunion.Rechazar(this);
     }
+
+    /** Se une a la reunion a la que ha sido invitada
+     *
+     * @param hora Instant en el que se une
+     */
     public void UnirseAReunion(Instant hora){
         reunion.Unirse(hora, this);
     }
-    public void RechazarReunion(Instant hora){
+    /** Rechaza la reunion a la que ha sido invitada
+     */
+    public void RechazarReunion(){
         reunion.Rechazar(this);
     }
 
