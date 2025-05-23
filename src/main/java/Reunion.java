@@ -47,8 +47,13 @@ public abstract class Reunion {
      * @param hora Hora en que se envia la invitacion
      * @param invitado Invitable que se le envia la invitacion
      */
-    public void Invitar(Instant hora, Invitable invitado){
-        Invitaciones.add(new Invitacion(hora,invitado,this));
+    public void Invitar(Instant hora, Invitable invitado) throws ReunionFinalizadaException{
+        if (horaFin==null) {
+            Invitaciones.add(new Invitacion(hora, invitado, this));
+        }
+        else{
+            throw new ReunionFinalizadaException("invitar a nuevas personas.");
+        }
     }
 
     /** Une a persona a la reunion y marca su Asistencia
@@ -57,7 +62,7 @@ public abstract class Reunion {
      * @param hora Instant en el que se une a la reunion
      * @param yo Persona que se une
      */
-    public void Unirse(Instant hora, Persona yo) {
+    public void Unirse(Instant hora, Persona yo) throws ReunionFinalizadaException{
         if (horaFin == null) {
             Asistencias.add(new Asistencia(yo));
             Iterator<Ausencia> itr =Ausencias.iterator();
@@ -71,6 +76,9 @@ public abstract class Reunion {
                 if (hora.compareTo(horaInicio) > 0)
                     Retrasos.add(new Retraso(hora, yo));
         }
+        else if (horaFin!=null){
+            throw new ReunionFinalizadaException("unirse a la reunión");
+        }
     }
 
     /**
@@ -81,8 +89,13 @@ public abstract class Reunion {
         Ausencias.add(new Ausencia(yo));
     }
 
-    public void crearNota(String contenido){
-        Notas.add(new Nota(contenido));
+    public void crearNota(String contenido) throws ReunionFinalizadaException{
+        if (horaFin==null) {
+            Notas.add(new Nota(contenido));
+        }
+        else{
+            throw new ReunionFinalizadaException("crear más notas");
+        }
     }
 
     public ArrayList<Nota> obtenerNotas(){
@@ -110,8 +123,16 @@ public abstract class Reunion {
      *
      * @return Porcentaje de Asistencia sobre Personas invitadas
      */
-    public float obtenerProcentajeAsistencia(){
-        return (float) Asistencias.size()/(Asistencias.size()+Ausencias.size())*100f;
+    public float obtenerProcentajeAsistencia() throws ReunionEnCursoException,ReunionSinIniciarException{
+        if(horaInicio!=null & horaFin!=null) {
+            return (float) Asistencias.size()/(Asistencias.size()+Ausencias.size())*100f;
+        }
+        else if(horaInicio==null){
+            throw new ReunionSinIniciarException();
+        }
+        else {
+            throw new ReunionEnCursoException();
+        }
     }
 
     /** Calcula la duracion real de la Reunion
@@ -172,10 +193,6 @@ public abstract class Reunion {
         try{
             float tiempoReal=this.calcularTiempoReal();
             try {
-                ArrayList<Asistencia> asistencias =this.obtenerAsistencias();
-                ArrayList<Retraso> retrasos=this.obtenerRetrasos();
-                ArrayList<Ausencia> ausencias =this.obtenerAunsencias();
-                ArrayList<Nota> notas =this.obtenerNotas();
                 FileWriter informe = new FileWriter("InformeReunion.txt");
                 informe.write("Fecha de la reunión:"+fecha+"\nHora de inicio prevista:"+this.InstantToString(horaPrevista)+"\nHora de inicio real:"+this.InstantToString(horaInicio));
                 informe.write("\nHora de fin:"+this.InstantToString(horaFin)+"\nDuración de la reunión:"+tiempoReal+"\n"+EspacioDeReunion+" de la reunión:"+EspacioEspecifico+"\nTipo de reunión:"+tipo);
@@ -197,7 +214,7 @@ public abstract class Reunion {
                         informe.write("\n" + persona.toString());
                     }
                 }
-                informe.write("\nTotal de asistentes: "+this.obtenerTotalAsistencia()+"\nPorcentaje de asistencia: "+this.obtenerProcentajeAsistencia());
+                informe.write("\nTotal de asistentes: "+this.obtenerTotalAsistencia()+"\nPorcentaje de asistencia: "+this.obtenerProcentajeAsistencia()+"%");
                 if (Notas.size()!=0) {
                     informe.write("\nNotas:");
                     for (Nota nota : Notas) {
@@ -216,4 +233,5 @@ public abstract class Reunion {
         }
 
     }
+
 }

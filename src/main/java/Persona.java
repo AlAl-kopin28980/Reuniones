@@ -47,11 +47,11 @@ public class Persona implements Invitable {
      *
      * @param hora Instant en el que se une
      */
-    public void UnirseAReunion(Instant hora) throws NoTieneInvitacionException{
+    public void UnirseAReunion(Instant hora) throws NoTieneInvitacionException, ReunionFinalizadaException{
         if (reunion!=null) {
             reunion.Unirse(hora, this);
         }
-        else{
+        else if (reunion==null){
             throw new NoTieneInvitacionException(this);
         }
     }

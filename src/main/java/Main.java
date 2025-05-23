@@ -8,24 +8,36 @@ public class Main {
         ventas.añadirEmpleado("Mario","Mario","turtlefighter@hola.com");
         ventas.añadirEmpleado("Mario","Luigi","pepoterapato@hola.com");
         Persona maria= new Persona("1","Magdalena","Maria","marialaquellora@hola.com");
+        Persona pedro= new Persona("2","Venegas","Pedro","pedrodelavega@hola.com");
         Empleado juarez = ventas.getEmpleado(0);
         ReunionPresencial r = juarez.organizarReunionPresencial(Instant.now(), Duration.ofHours(2),20,05,2025,"Salon7",tipoReunion.MARKETING);
-        r.Invitar(Instant.now(),ventas);
-        r.Invitar(Instant.now(),maria);
-        r.iniciar();
-        try{
-        juarez.UnirseAReunion(Instant.now());}
-        catch(NoTieneInvitacionException w){
+        try {
+            r.Invitar(Instant.now(), ventas);
+            r.Invitar(Instant.now(), maria);
+            r.iniciar();
+            try {
+                juarez.UnirseAReunion(Instant.now());
+            } catch (NoTieneInvitacionException w) {
+                System.out.println(w.getMessage());
+            }
+        }
+        catch (ReunionFinalizadaException w){
             System.out.println(w.getMessage());
         }
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+        try {
+            r.emitirInforme();
+        }
+        catch(ReunionEnCursoException|ReunionSinIniciarException w){
+            System.out.println(w.getMessage());
         }
         try{
         maria.UnirseAReunion(Instant.now());}
-        catch(NoTieneInvitacionException w){
+        catch(NoTieneInvitacionException | ReunionFinalizadaException w){
             System.out.println(w.getMessage());
         }
         try {
@@ -33,13 +45,26 @@ public class Main {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        r.crearNota("Está reunión es muy informativa");
+        try{
+            r.crearNota("Esta reunión es muy informativa");}
+        catch(ReunionFinalizadaException w){
+            System.out.println(w.getMessage());
+        }
+        try{
+            pedro.UnirseAReunion(Instant.now());}
+        catch(NoTieneInvitacionException | ReunionFinalizadaException w){
+            System.out.println(w.getMessage());
+        }
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        r.crearNota("Está reunión está finalizando");
+        try{
+            r.crearNota("Está reunión está finalizando");}
+        catch(ReunionFinalizadaException w){
+            System.out.println(w.getMessage());
+        }
         try {
             r.finalizar();
         } catch (ReunionSinIniciarException e) {

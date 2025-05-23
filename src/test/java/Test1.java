@@ -45,19 +45,19 @@ public class Test1 {
     @DisplayName("Test: Invitar a un departamento")
     public void testInvitarDepartamento() throws Exception {
         r.Invitar(Instant.now(), ventas);
-        System.out.println(r.obtenerInvitaciones());
+        assertNotNull(r.obtenerInvitaciones());
     }
 
     @Test
     @DisplayName("Test: Invitar persona externa")
-    public void testInvitarPersona() {
+    public void testInvitarPersona() throws Exception {
         r.Invitar(Instant.now(), maria);
         assertNotNull(r.obtenerInvitaciones());
     }
 
     @Test
     @DisplayName("Test: crear notas")
-    public void crearNotas() {
+    public void crearNotas() throws Exception {
         r.iniciar();
         r.crearNota("La reunión empieza");
         assertNotNull(r.obtenerNotas());
@@ -124,7 +124,7 @@ public class Test1 {
 
     @Test
     @DisplayName("Test: NoTieneInvitacionException")
-    public void testSinInvitación() throws Exception{
+    public void testSinInvitación()  {
         Exception exception = assertThrows(NoTieneInvitacionException.class,
                 ()->{
                     juarez.UnirseAReunion(Instant.now());
@@ -132,8 +132,20 @@ public class Test1 {
     }
 
     @Test
+    @DisplayName("Test: ReunionFinalizadaException en UnirseAReunion")
+    public void unirseDespuesDeFin() throws Exception{
+        r.iniciar();
+        r.Invitar(Instant.now(),juarez);
+        r.finalizar();
+        Exception exception = assertThrows(ReunionFinalizadaException.class,
+                ()->{
+                    juarez.UnirseAReunion(Instant.now());
+                });
+    }
+
+    @Test
     @DisplayName("Test: ReunionSinIniciarException en finalizar")
-    public void seFinzalizaAntes() throws Exception{
+    public void seFinzalizaAntes() {
         Exception exception = assertThrows(ReunionSinIniciarException.class,
                 ()->{
                     r.finalizar();
@@ -141,7 +153,7 @@ public class Test1 {
     }
     @Test
     @DisplayName("Test: ReunionSinIniciarException en emitirInforme")
-    public void informeAntesInicio() throws Exception{
+    public void informeAntesInicio() {
         Exception exception = assertThrows(ReunionSinIniciarException.class,
                 ()->{
                     r.emitirInforme();
@@ -150,7 +162,7 @@ public class Test1 {
 
     @Test
     @DisplayName("Test: ReunionEnCursoException en emitirInforme")
-    public void InformeAntesDeFin() throws Exception{
+    public void InformeAntesDeFin(){
         r.iniciar();
         Exception exception = assertThrows(ReunionEnCursoException.class,
                 ()->{
@@ -159,12 +171,41 @@ public class Test1 {
     }
 
     @Test
-    @DisplayName("Test: ReunionEnCursoException1")
-    public void calcularAntesDeFin() throws Exception{
-        r.iniciar();
-        Exception exception = assertThrows(ReunionEnCursoException.class,
+    @DisplayName("Test: Exceptions en calcularTiempoReal")
+    public void calcularAntesDeFin() {
+        Exception exception = assertThrows(ReunionSinIniciarException.class,
                 ()->{
                     r.calcularTiempoReal();
+                });
+        r.iniciar();
+        Exception exception2 = assertThrows(ReunionEnCursoException.class,
+                ()->{
+                    r.calcularTiempoReal();
+                });
+    }
+
+    @Test
+    @DisplayName("Test: ReunionFinalizadaException en crearNota")
+    public void crearNotaDespuesDeFin() throws Exception {
+        r.iniciar();
+        r.finalizar();
+        Exception exception = assertThrows(ReunionFinalizadaException.class,
+                ()->{
+                    r.crearNota("La reunión terminó");
+                });
+    }
+
+    @Test
+    @DisplayName("Test: Exceptions en obtenerPorcentajeAsistencia")
+    public void tesPorcentajeAsistencia(){
+        Exception exception = assertThrows(ReunionSinIniciarException.class,
+                ()->{
+                    r.obtenerProcentajeAsistencia();
+                });
+        r.iniciar();
+        Exception exception2 = assertThrows(ReunionEnCursoException.class,
+                ()->{
+                    r.obtenerProcentajeAsistencia();
                 });
     }
 }
