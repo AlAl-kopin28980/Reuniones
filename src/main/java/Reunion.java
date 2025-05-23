@@ -1,7 +1,5 @@
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.time.temporal.ChronoUnit;
 import java.io.FileWriter;
@@ -107,37 +105,39 @@ public abstract class Reunion {
             return "Reunion terminada a la hora: "+ horaFin.toString();
     }
 
+    public String InstantToString(Instant hora) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneOffset.UTC);
+            String formattedInstant = formatter.format(hora);
+            return formattedInstant;
+    }
     protected void emitirInforme(String EspacioDeReunion, String EspacioEspecifico) {
         try {
-            ArrayList<Asistencia> asistencias =this.obtenerAsistencias();
-            ArrayList<Retraso> retrasos=this.obtenerRetrasos();
-            ArrayList<Ausencia> ausencias =this.obtenerAunsencias();
-            ArrayList<Nota> notas =this.obtenerNotas();
             FileWriter informe = new FileWriter("InformeReunion.txt");
-            informe.write("Fecha de la reunión:"+this.obtenerFecha()+"\nHora de inicio prevista:"+this.obtenerHoraInicioPrevista()+"\nHora de inicio real:"+this.obtenerHoraInicio());
-            informe.write("\nHora de fin:"+this.obtenerHoraFin()+"\nDuración de la reunión:"+this.calcularTiempoReal()+"\n"+EspacioDeReunion+" de la reunión:"+EspacioEspecifico+"\nTipo de reunión:"+this.obtenerTipoReunion());
+            informe.write("Fecha de la reunión:"+fecha+"\nHora de inicio prevista:"+this.InstantToString(horaPrevista)+"\nHora de inicio real:"+this.InstantToString(horaInicio));
+            informe.write("\nHora de fin:"+this.InstantToString(horaFin)+"\nDuración de la reunión:"+this.calcularTiempoReal()+"\n"+EspacioDeReunion+" de la reunión:"+EspacioEspecifico+"\nTipo de reunión:"+tipo);
             informe.write("\nLista de participantes:");
-            for (Asistencia persona: asistencias){
+            for (Asistencia persona: Asistencias){
                 informe.write("\n"+persona.toString());
             }
             informe.write("\nLista de retrasos:");
-            for (Retraso persona: retrasos){
-                informe.write("\n"+persona.toString()+". Tiempo de llegada: "+persona.getHora());
+            for (Retraso persona: Retrasos){
+                informe.write("\n"+persona.toString()+". Tiempo de llegada: "+this.InstantToString(persona.getHora()));
             }
             informe.write("\nLista de ausencias:");
-            for (Ausencia persona: ausencias){
+            for (Ausencia persona: Ausencias){
                 informe.write("\n"+persona.toString());
             }
             informe.write("\nNotas:");
-            for (Nota nota: notas){
+            for (Nota nota: Notas){
                 informe.write("\n"+nota.getContenido());
             }
             informe.close();
             System.out.println("Se emitió informe correctamente.");
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error error.");
+            System.out.println("Ha ocurrido un error.");
             e.printStackTrace();
         }
     }
+
 
 }
