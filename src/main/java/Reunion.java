@@ -195,7 +195,7 @@ public abstract class Reunion {
 
 
     public String InstantToString(Instant hora) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneOffset.UTC);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneOffset.ofHours(-4));
             String formattedInstant = formatter.format(hora);
             return formattedInstant;
     }
