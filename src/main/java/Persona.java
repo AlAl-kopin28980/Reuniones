@@ -46,6 +46,9 @@ public class Persona implements Invitable {
     /** Se une a la reunion a la que ha sido invitada
      *
      * @param hora Instant en el que se une
+     *
+     * @throws NoTieneInvitacionException la Persona no ha sido invitada a una Reunion
+     * @throws ReunionFinalizadaException no se puede unir a una Reunion finalizada
      */
     public void UnirseAReunion(Instant hora) throws NoTieneInvitacionException, ReunionFinalizadaException{
         if (reunion!=null) {

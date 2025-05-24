@@ -24,6 +24,9 @@ public class ReunionPresencial extends Reunion {
 
     /**
      * Emite un informe sobre la Reunion
+     *
+     * @throws ReunionSinIniciarException cuando la Reunion no ha iniciado
+     * @throws ReunionEnCursoException cuando la Reunion no ha finalizado
      */
     public void emitirInforme() throws ReunionEnCursoException,ReunionSinIniciarException{
         super.emitirInforme("Sala",sala);

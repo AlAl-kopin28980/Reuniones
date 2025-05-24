@@ -46,6 +46,8 @@ public abstract class Reunion {
      *
      * @param hora Hora en que se envia la invitacion
      * @param invitado Invitable que se le envia la invitacion
+     *
+     * @throws ReunionFinalizadaException si la Reunion termino no se pueden enviar Invitaciones
      */
     public void Invitar(Instant hora, Invitable invitado) throws ReunionFinalizadaException{
         if (horaFin==null) {
@@ -61,6 +63,8 @@ public abstract class Reunion {
      *
      * @param hora Instant en el que se une a la reunion
      * @param yo Persona que se une
+     *
+     * @throws ReunionFinalizadaException no se puede unir a una Reunion finalizida
      */
     public void Unirse(Instant hora, Persona yo) throws ReunionFinalizadaException{
         if (horaFin == null) {
@@ -122,6 +126,9 @@ public abstract class Reunion {
     /**
      *
      * @return Porcentaje de Asistencia sobre Personas invitadas
+     *
+     * @throws ReunionSinIniciarException el metodo debe ser llamado despues de que termine la Reunion
+     * @throws ReunionEnCursoException
      */
     public float obtenerProcentajeAsistencia() throws ReunionEnCursoException,ReunionSinIniciarException{
         if(horaInicio!=null & horaFin!=null) {
@@ -138,6 +145,9 @@ public abstract class Reunion {
     /** Calcula la duracion real de la Reunion
      *
      * @return duracion de la Reunion en segundos
+     *
+     * @throws ReunionSinIniciarException no se puede calcular la duracion de una Reunion sin iniciar
+     * @throws ReunionEnCursoException no se puede calcular la duracion de una Reunion sin finalizar
      */
     public float calcularTiempoReal() throws ReunionEnCursoException,ReunionSinIniciarException{
         if(horaInicio!=null & horaFin!=null) {
@@ -154,6 +164,11 @@ public abstract class Reunion {
     public void iniciar(){
         horaInicio= Instant.now();
     }
+
+    /**
+     *
+     * @throws ReunionSinIniciarException solo se puede finalizar una Reunion en curso
+     */
     public void finalizar() throws ReunionSinIniciarException{
         if (horaInicio!=null) {
             horaFin = Instant.now();
@@ -188,6 +203,9 @@ public abstract class Reunion {
      *
      * @param EspacioDeReunion Nombre generico de donde se realiza la reunion ej: "Sala"
      * @param EspacioEspecifico Nombre de donde se realiza la reunion ej: "1-3"
+     *
+     * @throws ReunionSinIniciarException cuando la Reunion no ha iniciado
+     * @throws ReunionEnCursoException cuando la Reunion no ha finalizado
      */
     protected void emitirInforme(String EspacioDeReunion, String EspacioEspecifico) throws ReunionSinIniciarException,ReunionEnCursoException {
         try{
