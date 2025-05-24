@@ -193,7 +193,11 @@ public abstract class Reunion {
             return "Reunion terminada a la hora: "+ horaFin.toString();
     }
 
-
+    /**
+     * @param hora instante que se quiere modificar
+     * @return String que contiene el instante entregado de forma más amigable, con hora:minutos:segundos,
+     * en lugar de involucrar fecha y zona horaria cuando se imprime
+     */
     public String InstantToString(Instant hora) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneOffset.ofHours(-4));
             String formattedInstant = formatter.format(hora);
